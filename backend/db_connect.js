@@ -1,4 +1,6 @@
+// backend/db.js
 const { Client } = require('pg');
+
 const client = new Client({
   user: 'postgres',
   host: 'localhost',
@@ -6,4 +8,7 @@ const client = new Client({
   password: '1234',
   port: 5432,
 });
+
 client.connect();
+
+module.exports = client; // ✅ exporta diretamente o client
