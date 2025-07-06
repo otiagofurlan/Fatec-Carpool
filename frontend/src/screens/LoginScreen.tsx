@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
-
-// Defina o tipo da pilha de navegação
-type RootStackParamList = {
-  Login: undefined;
-  Home: undefined; // Adicione outras telas conforme necessário
-};
+import { RootStackParamList } from '../../App';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -22,14 +16,14 @@ export default function LoginScreen({ navigation }: Props) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://<SEU_IP>:3000/api/login', {
+      const response = await axios.post('http://192.168.2.103:3000/api/login', {
         email,
         senha,
       });
 
       if (response.data.success) {
         Alert.alert('Login realizado com sucesso!');
-        navigation.navigate('Home'); // ajuste conforme as telas do seu app
+        navigation.navigate('Home', { email }); // envia o e-mail para a Home
       } else {
         Alert.alert('Falha no login', response.data.message);
       }
