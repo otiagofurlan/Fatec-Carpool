@@ -1,4 +1,3 @@
-// backend/db.js
 const { Client } = require('pg');
 
 const client = new Client({
@@ -11,4 +10,4 @@ const client = new Client({
 
 client.connect();
 
-module.exports = client; // ✅ exporta diretamente o client
+module.exports = client;

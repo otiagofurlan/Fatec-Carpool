@@ -4,28 +4,35 @@ import axios from 'axios';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 
-type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
 type Props = {
-  navigation: LoginScreenNavigationProp;
+  navigation: RegisterScreenNavigationProp;
 };
 
-export default function LoginScreen({ navigation }: Props) {
+export default function RegisterScreen({ navigation }: Props) {
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
+    if (!nome || !email || !senha) {
+      Alert.alert('Preencha todos os campos');
+      return;
+    }
+
     try {
-      const response = await axios.post('http://192.168.18.66:3000/api/login', {
+      const response = await axios.post('http://192.168.18.66:3000/api/register', {
+        nome,
         email,
         senha,
       });
 
       if (response.data.success) {
-        Alert.alert('Login realizado com sucesso!');
-        navigation.navigate('Home', { email }); // envia o e-mail para a Home
+        Alert.alert('Cadastro realizado com sucesso!');
+        navigation.navigate('Login'); // volta para a tela de login
       } else {
-        Alert.alert('Falha no login', response.data.message);
+        Alert.alert('Erro no cadastro', response.data.message);
       }
     } catch (error) {
       Alert.alert('Erro ao conectar', 'Verifique seu backend.');
@@ -34,7 +41,13 @@ export default function LoginScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Fatec Carpool - Login</Text>
+      <Text style={styles.title}>Fatec Carpool - Cadastro</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nome"
+        value={nome}
+        onChangeText={setNome}
+      />
       <TextInput
         style={styles.input}
         placeholder="E-mail"
@@ -49,8 +62,7 @@ export default function LoginScreen({ navigation }: Props) {
         onChangeText={setSenha}
         secureTextEntry
       />
-      <Button title="Entrar" onPress={handleLogin} />
-      <Button title="Criar conta" onPress={() => navigation.navigate('Register')} />
+      <Button title="Cadastrar" onPress={handleRegister} />
     </View>
   );
 }
