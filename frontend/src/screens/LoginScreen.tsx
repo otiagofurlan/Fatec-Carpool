@@ -16,7 +16,7 @@ export default function LoginScreen({ navigation }: Props) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.18.66:3000/api/login', {
+      const response = await axios.post('http://192.168.2.103:3000/api/login', {
         email,
         senha,
       });
@@ -34,7 +34,7 @@ export default function LoginScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Fatec Carpool - Login</Text>
+      <Text style={styles.title}>Fatec Carpool</Text>
       <TextInput
         style={styles.input}
         placeholder="E-mail"
@@ -50,7 +50,11 @@ export default function LoginScreen({ navigation }: Props) {
         secureTextEntry
       />
       <Button title="Entrar" onPress={handleLogin} />
+
+      <View style={{ marginTop: 10 }} /> {/* Espaço de 10 pixels */}
+
       <Button title="Criar conta" onPress={() => navigation.navigate('Register')} />
+
     </View>
   );
 }
