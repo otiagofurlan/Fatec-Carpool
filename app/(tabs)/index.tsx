@@ -78,12 +78,8 @@ export default function HomeScreen() {
               <Clock size={16} color="#111111" />
               <Text style={styles.rideDetailText}>18:15</Text>
             </View>
-            <View style={styles.rideDetailItem}>
-              <Users size={16} color="#111111" />
-              <Text style={styles.rideDetailText}>2/4</Text>
-            </View>
             <TouchableOpacity style={styles.viewPassengersButton}>
-              <Text style={styles.viewPassengersText}>Ver passageiros</Text>
+              <Text style={styles.viewPassengersText}>Ver passageiros 2/4</Text>
             </TouchableOpacity>
           </View>
         </View>

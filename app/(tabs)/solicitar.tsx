@@ -421,13 +421,18 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   footer: {
-    paddingHorizontal: 20,
-    paddingVertical: 30,
+    marginTop: 10,
+    paddingVertical: 10,
+    backgroundColor: '#E9E9E9',
     alignItems: 'center',
   },
   footerText: {
     fontSize: 14,
-    color: '#989898',
+    color: 'black',
     textAlign: 'center',
+    fontWeight: 'normal',
+  },
+  footerTextBold: {
+    fontWeight: 'bold',
   },
 });
