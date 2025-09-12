@@ -11,10 +11,14 @@
     "start:backend": "cd backend && npm start"
   },
   "devDependencies": {
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "concurrently": "^8.2.0"
   },
   "workspaces": [
     "frontend",
     "backend"
-  ]
+  ],
+  "dependencies": {
+    "expo-router": "~5.1.6"
+  }
 }
