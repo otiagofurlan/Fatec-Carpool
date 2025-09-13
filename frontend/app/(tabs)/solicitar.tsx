@@ -170,7 +170,11 @@ export default function SolicitarScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <Text style={styles.title}>Solicitar Carona</Text>
         </View>
@@ -226,12 +230,6 @@ export default function SolicitarScreen() {
         <View style={styles.ridesContainer}>
           {mockRides.map(renderRideCard)}
         </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            O valor pode variar conforme o número de ocupantes.
-          </Text>
-        </View>
       </ScrollView>
     </View>
   );
@@ -245,16 +243,20 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    paddingBottom: 180, // Espaço para footer (40px) + tabBar (120px)
+  },
   header: {
-    paddingTop: 60,
+    paddingTop: 40,
     paddingHorizontal: 20,
     paddingBottom: 20,
     alignItems: 'center',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+title: {
+    fontSize: 28,
+    fontWeight: '700',
     color: '#111111',
+    textAlign: 'center',
   },
   filterBar: {
     flexDirection: 'row',
@@ -419,20 +421,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-  },
-  footer: {
-    marginTop: 10,
-    paddingVertical: 10,
-    backgroundColor: '#E9E9E9',
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 14,
-    color: 'black',
-    textAlign: 'center',
-    fontWeight: 'normal',
-  },
-  footerTextBold: {
-    fontWeight: 'bold',
   },
 });

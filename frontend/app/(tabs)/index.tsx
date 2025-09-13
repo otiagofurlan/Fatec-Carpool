@@ -1,12 +1,70 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MapPin, LogOut, Car, Calendar, Clock, Users } from 'lucide-react-native';
+import { MapPin, LogOut, Car, Calendar, Clock, Wifi, WifiOff } from 'lucide-react-native';
+import { fatecCarpoolAPI } from '../../services/api';
 
 export default function HomeScreen() {
+  const [backendStatus, setBackendStatus] = useState('checking');
+  const [lastChecked, setLastChecked] = useState<string>('');
+
+  const checkBackend = async () => {
+    setBackendStatus('checking');
+    try {
+      await fatecCarpoolAPI.checkHealth();
+      setBackendStatus('online');
+      setLastChecked(new Date().toLocaleTimeString('pt-BR', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      }));
+    } catch (error) {
+      setBackendStatus('offline');
+      console.log('Backend offline:', error);
+    }
+  };
+
+  useEffect(() => {
+    checkBackend();
+    const interval = setInterval(checkBackend, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const showBackendInfo = () => {
+    const messages: { [key: string]: string } = {
+      online: 'Backend funcionando normalmente ✅',
+      offline: 'Backend não está respondendo ❌',
+      checking: 'Verificando servidor...'
+    };
+    
+    Alert.alert(
+      'Status do Backend',
+      messages[backendStatus] + (lastChecked ? `\n\nÚltima verificação: ${lastChecked}` : ''),
+      [
+        { text: 'Verificar Novamente', onPress: checkBackend },
+        { text: 'OK', style: 'cancel' }
+      ]
+    );
+  };
+
+  const getStatusColor = () => {
+    if (backendStatus === 'online') return '#10b981';
+    if (backendStatus === 'offline') return '#ef4444';
+    return '#f59e0b';
+  };
+
+  const getStatusText = () => {
+    if (backendStatus === 'online') return 'Online';
+    if (backendStatus === 'offline') return 'Offline';
+    return 'Verificando...';
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
@@ -25,6 +83,18 @@ export default function HomeScreen() {
             />
           </View>
         </View>
+
+        {/* Status do Backend */}
+        <TouchableOpacity 
+          style={[styles.statusIndicator, { backgroundColor: getStatusColor() }]}
+          onPress={showBackendInfo}
+        >
+          {backendStatus === 'offline' ? 
+            <WifiOff size={16} color="#FCFCFC" /> : 
+            <Wifi size={16} color="#FCFCFC" />
+          }
+          <Text style={styles.statusText}>{getStatusText()}</Text>
+        </TouchableOpacity>
 
         {/* Rating Card */}
         <View style={styles.ratingCard}>
@@ -106,7 +176,10 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+  },
+  scrollContent: {
     paddingHorizontal: 20,
+    paddingBottom: 160,
   },
   header: {
     flexDirection: 'row',
@@ -146,6 +219,21 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
   },
+  statusIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 12,
+    marginBottom: 16,
+    gap: 8,
+  },
+  statusText: {
+    color: '#FCFCFC',
+    fontSize: 14,
+    fontWeight: '600',
+  },
   ratingCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -159,7 +247,7 @@ const styles = StyleSheet.create({
   },
   ratingLabel: {
     fontSize: 18,
-    color: '111111',
+    color: '#111111',
     marginBottom: 8,
   },
   ratingContainer: {
@@ -265,83 +353,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#111111',
   },
-  promoCard: {
-    backgroundColor: '#FCFCFC',
+  cardIndex: {
+    width: "100%",
+    height: 100,
     borderRadius: 12,
-    padding: 20,
+    resizeMode: "cover",
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#989898',
-    flexDirection: 'row',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  cardIndex: {
-  width: "100%",
-  height: 100,
-  borderRadius: 12,
-  resizeMode: "cover",
-  marginBottom: 16,
-  borderWidth: 1,
-  borderColor: "#11111130",
-  },
-  promoContent: {
-    flex: 1,
-  },
-  promoTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#111111',
-    marginBottom: 4,
-  },
-  promoSubtitle: {
-    fontSize: 14,
-    color: '#989898',
-  },
-  promoGraphic: {
-    width: 80,
-    height: 60,
-    position: 'relative',
-  },
-  networkPattern: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#111111',
-    borderRadius: 8,
-    opacity: 0.1,
-  },
-  adContent: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  adLogo: {
-    width: 40,
-    height: 40,
-    backgroundColor: '#FCFCFC',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  adLogoText: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#FFC86A',
-  },
-  adTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#FCFCFC',
-  },
-  adSubtitle: {
-    fontSize: 12,
-    color: '#FCFCFC',
-    opacity: 0.8,
-  },
-  adImage: {
-    width: 80,
-    height: 60,
-    borderRadius: 8,
+    borderColor: "#11111130",
   },
 });

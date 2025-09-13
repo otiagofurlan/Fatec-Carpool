@@ -53,7 +53,11 @@ export default function OfereceScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Oferecer Carona</Text>
@@ -196,13 +200,6 @@ export default function OfereceScreen() {
             <Text style={styles.confirmButtonText}>Confirmar</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Footer Message */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            O <Text style={styles.boldText}>Fatec Carpool</Text> não tem fins lucrativos.
-          </Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -216,9 +213,12 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    paddingBottom: 160, // Espaço para footer (40px) + tabBar (120px)
+  },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingVertical: 40,
     backgroundColor: '#FCFCFC',
   },
   title: {
@@ -359,15 +359,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: '#111111',
-  },
-  footer: {
-    paddingHorizontal: 20,
-    paddingBottom: 40,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 16,
-    color: '#989898',
-    textAlign: 'center',
   },
 });

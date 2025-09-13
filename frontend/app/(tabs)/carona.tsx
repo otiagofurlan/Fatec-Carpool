@@ -70,7 +70,11 @@ export default function CaronaScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Solicitações de Carona</Text>
@@ -168,11 +172,6 @@ export default function CaronaScreen() {
             </View>
           </View>
         ))}
-
-        {/* Footer Message */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>O respeito <Text style={styles.boldText}>sempre</Text> deve prevalecer.</Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -186,9 +185,12 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    paddingBottom: 160, // Espaço para footer (40px) + tabBar (120px)
+  },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingVertical: 40,
     backgroundColor: '#FCFCFC',
   },
   title: {
@@ -385,15 +387,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#111111',
-  },
-  footer: {
-    paddingHorizontal: 20,
-    paddingVertical: 40,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 16,
-    color: '#989898',
-    textAlign: 'center',
-  },
+  }
 });

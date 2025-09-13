@@ -125,7 +125,11 @@ export default function HistoricoScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+  style={styles.scrollView}
+  contentContainerStyle={styles.scrollContent}
+  showsVerticalScrollIndicator={false}
+>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Histórico de Caronas</Text>
@@ -264,9 +268,12 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+  paddingBottom: 180, // Espaço para footer + tabBar
+},
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 40,
     backgroundColor: '#FCFCFC',
   },
   title: {
@@ -282,7 +289,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 20,
     borderRadius: 25,
-    paddingVertical: 12,
+    paddingTop: 24,
     paddingHorizontal: 20,
   },
   filterButton: {
